@@ -1,83 +1,81 @@
-[README.md](https://github.com/user-attachments/files/32970288/README.md)
-# Service Desk Documentation & Process Design Portfolio
+# Diagrams
 
-A showcase of how I audit, design, and modernize operational documentation for an IT service desk: standard operating procedures (SOPs), workflows, quick-reference aids, role definitions, and training programs.
-
-> **Confidentiality note:** This repository describes *what* each document was designed to do and *how* I approach the work. It intentionally contains **no** employer, client, vendor, personnel, contact, or environment-specific details. All templates and diagrams are original, generic examples.
+Generic, illustrative diagrams of how I approach documentation work. GitHub renders Mermaid automatically.
 
 ---
 
-## What this portfolio demonstrates
+## 1. Document lifecycle
 
-| Skill area | How it shows up |
-| --- | --- |
-| **Process analysis** | Auditing existing documentation for gaps, duplication, outdated terminology, and conflicts between documents |
-| **Process design** | Building new SOPs and workflows from scratch where none existed, based on how work is actually performed |
-| **Governance & document control** | Ownership, approval, versioning, revision history, and retirement of superseded documents |
-| **Incident & escalation management** | ITIL-aligned procedures for major incidents, escalation handoffs, and impact communication |
-| **Role & career architecture** | Tier responsibilities, career progression paths, and certification alignment by role |
-| **Training design** | A structured, multi-week new-hire onboarding program |
-| **Technical writing** | Writing for different audiences: full SOPs for reference, one-page quick references for use under pressure |
-
----
-
-## Repository contents
-
-| Path | What's inside |
-| --- | --- |
-| [`docs/case-study.md`](docs/case-study.md) | The documentation modernization project: the problem, approach, and outcomes |
-| [`docs/document-catalog.md`](docs/document-catalog.md) | Every document type I produced and what it is designed to do |
-| [`docs/methodology.md`](docs/methodology.md) | My repeatable framework for auditing and modernizing SOPs |
-| [`docs/documentation-standards.md`](docs/documentation-standards.md) | The style and structure standards applied across all documents |
-| [`templates/`](templates/) | Blank, reusable templates for SOPs, quick references, and workflows |
-| [`diagrams/`](diagrams/) | Mermaid diagrams of the document lifecycle, audit process, and document hierarchy |
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Review: Author submits
+    Review --> Draft: Changes requested
+    Review --> Approved: Approver signs off
+    Approved --> Published: Posted to single source of truth
+    Published --> ScheduledReview: Review date reached
+    Published --> Draft: Process change
+    ScheduledReview --> Published: Still accurate
+    ScheduledReview --> Draft: Update needed
+    Published --> Retired: Superseded
+    Retired --> [*]
+```
 
 ---
 
-## Portfolio at a glance
+## 2. Audit & disposition process
+
+```mermaid
+flowchart TD
+    A[Inventory all documents] --> B[Assess each document]
+    B --> C{Accurate &<br/>current?}
+    C -- Yes --> D{Owned &<br/>versioned?}
+    D -- Yes --> K[Keep]
+    D -- No --> K2[Keep + add<br/>control blocks]
+    C -- No --> E{Overlaps with<br/>another doc?}
+    E -- Yes --> F[Consolidate]
+    E -- No --> G{Still a<br/>needed process?}
+    G -- Yes --> H[Update / rewrite]
+    G -- No --> R[Retire]
+    I[Gap found:<br/>no document exists] --> J[Create new]
+    F --> X[Cross-document<br/>reconciliation]
+    H --> X
+    J --> X
+    K2 --> X
+    X --> P[Review, approve, publish]
+```
+
+---
+
+## 3. Documentation hierarchy
+
+How the document types relate, from broad to specific.
+
+```mermaid
+flowchart TD
+    P[Policy / Standard<br/><i>What must be true</i>] --> S[SOP<br/><i>How to do it, in full</i>]
+    S --> W[Workflow<br/><i>Decision path</i>]
+    S --> Q[Quick Reference<br/><i>Do it under pressure</i>]
+    S --> T[Training Program<br/><i>Learn to do it</i>]
+    M[Roles & Career Matrix<br/><i>Who does it</i>] --> S
+```
+
+---
+
+## 4. Generic tiered escalation model
+
+An illustrative, industry-standard model. It does not represent any specific organization's procedure.
 
 ```mermaid
 flowchart LR
-    A[Audit existing docs] --> B[Identify gaps &<br/>conflicts]
-    B --> C[Standardize<br/>terminology]
-    C --> D[Consolidate,<br/>rewrite, or create]
-    D --> E[Review &<br/>approval]
-    E --> F[Publish &<br/>retire old versions]
-    F --> G[Scheduled<br/>review]
-    G --> A
+    U([Request / Incident]) --> L1[L1 Support<br/>Triage & resolve]
+    L1 -- Resolved --> C([Close])
+    L1 -- Needs escalation --> D{Escalation<br/>criteria met?}
+    D -- No --> L1
+    D -- Yes --> L2[L2 Support<br/>Named owner]
+    L2 -- Resolved --> C
+    L2 -- Needs escalation --> E[Engineering<br/>Named owner]
+    E --> C
 ```
 
-**Scope of the project:** 15+ documents audited, consolidated, rewritten, or created across six categories:
-
-1. Incident management
-2. Ticket lifecycle & quality
-3. Escalation & handoffs
-4. Communication & notification
-5. Roles, responsibilities & career development
-6. Onboarding & training
-
-See the [document catalog](docs/document-catalog.md) for what each one does.
-
----
-
-## Frameworks & concepts applied
-
-- **ITIL 4** practices: incident management, major incident management, service request handling, knowledge management
-- **Tiered support model** design (L1 / L2 / engineering escalation)
-- **Document control** principles: single source of truth, version control, defined ownership, scheduled review
-- **Governance thinking** from a cybersecurity and GRC background: clear accountability, auditability, and consistency across controls
-
----
-
-## Using the templates
-
-The files in [`templates/`](templates/) are free to reuse. Copy one, replace the bracketed placeholders, and delete any section that doesn't apply.
-
----
-
-## About me
-
-IT service desk professional with a B.S. in Cybersecurity and Information Assurance, focused on governance, risk, and compliance (GRC) and on building the processes and documentation that make operations consistent and auditable.
-
-- LinkedIn: [linkedin.com/in/brentpetty](https://linkedin.com/in/brentpetty)
-- Contact: [brentpetty@comcast.net](mailto:brentpetty@comcast.net)
+> **Design principle:** every escalation is a direct handoff to a named owner, and the ticket's documentation must be complete before it moves.
